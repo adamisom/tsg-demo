@@ -1,0 +1,35 @@
+name: Test strength
+
+on:
+  pull_request:   # never pull_request_target, because the gate runs the PR's code
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: pip install -e . pytest
+      - run: python -m pytest -q
+
+  test-strength:
+    runs-on: ubuntu-latest
+    steps:
+      # On pull_request this checks out the merge commit. Depth 2 fetches it
+      # and both of its parents, which is all the gate needs.
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: pip install -e . pytest
+      # Pinned to a full commit sha of test-strength-gate (main at 0f2d9d1).
+      - uses: adamisom/test-strength-gate@0f2d9d15b7227be6ee34b70dfc9c6a0ab15d1c81
+        with:
+          fail-on: none

@@ -1,0 +1,15 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "shopcalc"
+version = "0.1.0"
+description = "A tiny package for trying test-strength-gate on a real pull request."
+requires-python = ">=3.10"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/shopcalc"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
